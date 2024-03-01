@@ -1,0 +1,142 @@
+import RPi.GPIO as GPIO
+import time
+import pygame
+
+# Set GPIO call mode as BCM
+GPIO.setmode(GPIO.BCM)
+
+# Define Ports
+ENA = 13
+ENB = 20
+IN1 = 19
+IN2 = 16
+IN3 = 21
+IN4 = 26
+
+#Define the initial speed of the cradle
+Speed = 50 
+
+# Initialize
+GPIO.setup(ENA, GPIO.OUT, initial=GPIO.LOW) #motor 1 is using ENA
+GPIO.setup(ENB, GPIO.OUT, initial=GPIO.LOW) #motor 2 is using ENB
+GPIO.setup(IN1, GPIO.OUT, initial=GPIO.LOW) #motor 1 positive supply
+GPIO.setup(IN2, GPIO.OUT, initial=GPIO.LOW) #motor 1 negative supply
+GPIO.setup(IN3, GPIO.OUT, initial=GPIO.LOW) #motor 2 positive supply
+GPIO.setup(IN4, GPIO.OUT, initial=GPIO.LOW) #motor 2 negative supply
+
+# Sets the intial frequency for the PWM of motor 1 and 2 to 1000 Hz
+PWMA=GPIO.PWM(ENA,1000)
+PWMB=GPIO.PWM(ENB,1000)
+# Define all the required function for stop, forward, back ,right ,left
+def Stop():
+    GPIO.output(IN1, False)
+    GPIO.output(IN2, False)
+    GPIO.output(IN3, False)
+    GPIO.output(IN4, False)
+    GPIO.output(ENA, False)
+    GPIO.output(ENB, False)
+
+def Move_Forward():
+    GPIO.output(ENA, True)
+    GPIO.output(ENB, True)
+    GPIO.output(IN1, True)
+    GPIO.output(IN2, False)
+    GPIO.output(IN3, True)
+    GPIO.output(IN4, False)
+def Move_Back():
+    GPIO.output(ENA, True)
+    GPIO.output(ENB, True)
+    GPIO.output(IN1, False)
+    GPIO.output(IN2, True)
+    GPIO.output(IN3, False)
+    GPIO.output(IN4, True)
+def Move_Right():
+    GPIO.output(ENA, True)
+    GPIO.output(ENB, True)
+    GPIO.output(IN1, True)
+    GPIO.output(IN2, False)
+    GPIO.output(IN3, False)
+    GPIO.output(IN4, True)
+def Move_Left():
+    GPIO.output(ENA, True)
+    GPIO.output(ENB, True)
+    GPIO.output(IN1, False)
+    GPIO.output(IN2, True)
+    GPIO.output(IN3, True)
+    GPIO.output(IN4, False)
+
+Speed=50
+print('base speed is 50')
+Speed1 = int(input("change of speed: \n")) 
+pygame.init()
+window = pygame.display.set_mode((50,50))
+pygame.display.set_caption('HELLO WORLD')
+mainloop=True
+
+while True:
+    try:
+        while mainloop:
+            pygame.time.delay(100)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    mainloop = False
+                elif event.type == pygame.KEYUP:
+                    #Asks user for input on how much they want to change the speed
+                    #Starts the PWM wave for both the motors
+                    PWMA.start(0)
+                    PWMB.start(0)
+                    Speed += Speed1
+                    PWMA.ChangeDutyCycle(Speed)
+                    PWMB.ChangeDutyCycle(Speed)
+                    Move_Forward()
+                elif event.type == pygame.KEYDOWN:
+                    #Starts the PWM wave for both the motors
+                    PWMA.start(0)
+                    PWMB.start(0)
+                    Speed += Speed1
+                    PWMA.ChangeDutyCycle(Speed)
+                    PWMB.ChangeDutyCycle(Speed)
+                    Move_Back()
+                elif event.type == pygame.K_RIGHT:
+                     #Starts the PWM wave for both the motors
+                     PWMA.start(0)
+                     PWMB.start(0)
+                     Speed += Speed1
+                     PWMA.ChangeDutyCycle(Speed)
+                     PWMB.ChangeDutyCycle(Speed)
+                     Move_Right()
+                elif event.type == pygame.K_LEFT:
+                     #Starts the PWM wave for both the motors
+                     PWMA.start(0)
+                     PWMB.start(0)
+                     Speed += Speed1
+                     PWMA.ChangeDutyCycle(Speed)
+                     PWMB.ChangeDutyCycle(Speed)
+                     Move_Left()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        GPIO.cleanup()
+#             if (User_Input == 'a'):  # If key 'a' is pressed
+#                 Move_Forward()
+#                 time.sleep(1)
+#                 Stop()
+#             elif (User_Input == 'b'):  # If key 'b' is pressed
+#                 Move_Back()
+#                 time.sleep(1)
+#                 Stop()
+#             elif (User_Input == 'c'):  # If key 'c' is pressed
+#                 Move_Left()
+#                 time.sleep(1)
+#                 Stop()
+#             elif (User_Input == 'd'):  # If key 'd' is pressed
+#                 Move_Right()
+#                 time.sleep(1)
+#                 Stop()
+#             else:
+#                 Stop()
+#                 time.sleep(1)  # Short delay to prevent high CPU usage
+#                 GPIO.cleanup()
+
+#     except:
+#         # Cleanup GPIO settings before exiting
