@@ -1,0 +1,24 @@
+#task3 
+
+## load display and save image
+import cv2
+
+# Load the image
+# If the image to be read in is not in the same directory as the code file, writing the full path is required
+img = cv2.imread("/home/wav/Downloads/abc.jpg")
+
+# Display the image
+cv2.imshow("image", img)
+# Check keyboard input
+input_key = cv2.waitKey(0) & 0xFF
+
+# Loop to keep the window open until a key is pressed
+    # Check if 'esc' key is pressed to exit
+if input_key == 27:  # 27 is the ASCII code for 'esc'
+    cv2.destroyAllWindows()
+    # Check if 's' key is pressed to save the image
+elif input_key == ord('s'):
+        # Save the image as "Duplicate_image.jpg"
+        # Note: Replace "Duplicate_image.jpg" with your chosen filename and file extension
+    cv2.imwrite("Duplicate_image.jpg", img)
+    cv2.destroyAllWindows()
