@@ -1,0 +1,44 @@
+###Opencv basic usage call the camera
+###task6 fianl video one
+import cv2
+import sys
+from PIL import Image
+#from pathlib import Path
+
+width = int(input('Give value for width in pixels: \n'))
+height = int(input('Give value for height in pixels: \n'))
+# Capture the default camera
+cap = cv2.VideoCapture(0)
+
+while True:
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+
+    # EXTRA my self
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+
+    # Display the resulting frame
+    cv2.imshow('frame', frame)
+    
+    # Wait for 'q' to break the loop
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        img=frame
+        #img = cv2.imread('/home/pi/Downloads/frame_screenshot_01.02.2024.png')
+        image_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        cv2.imshow('image_gray', image_gray)
+        image_resized = cv2.resize(img, (width, height), None, None, cv2.INTER_LINEAR)
+        cv2.imshow('resized_image', image_resized)
+        clock = cv2.rotate(image_resized,  cv2.ROTATE_90_CLOCKWISE)
+        ##anticlock = cv2.rotate(image_resized, cv2.ROTATE_90_ANTICLOCKWISE)
+        cv2.imshow('clockwise', clock)
+        ##cv2.imshow('anticlockwise', anticlock)
+        cv2.imwrite("Saved.jpg", image_gray)
+
+# Release the capture
+cap.release()
+
+
+
+cv2.destroyAllWindows()                                                                                                                                                                                                                    
