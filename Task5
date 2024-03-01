@@ -1,0 +1,73 @@
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BCM)
+servo1 = 12
+servo2 = 6
+servo3 = 5
+servo4 = 7
+GPIO.setup(servo1, GPIO.OUT)
+GPIO.setup(servo2, GPIO.OUT)
+GPIO.setup(servo3, GPIO.OUT)
+GPIO.setup(servo4, GPIO.OUT)
+s1 = GPIO.PWM(servo1,50)
+s2 = GPIO.PWM(servo2,50)
+s3 = GPIO.PWM(servo3,50)
+s4 = GPIO.PWM(servo4,50)
+
+p1 = 1
+p2 = 2
+p3 = 3
+p4 = 4
+p5 = 5
+p6 = 6
+p7 = 7
+p8 = 8
+p9 = 9
+p10 = 10
+p11 = 11
+p12 = 12
+
+
+s1.start(0)
+s2.start(0)
+s3.start(0)
+s4.start(0)
+
+while True:
+    servonumber = int(input('Select the servo number you want to move (1, 2, 3 or 4 or 5 for exiting): '))
+    if servonumber == 1:
+        position = int(input('Select position between 1 and 12: '))
+        s1.ChangeDutyCycle(position)
+    elif servonumber == 2:
+        position = int(input('Select position between 1 and 12: '))
+        s2.ChangeDutyCycle(position)
+    elif servonumber == 3:
+        position = int(input('Select position between 1 and 12: '))
+        s3.ChangeDutyCycle(position)
+    elif servonumber == 4:
+        position = int(input('Select position between 1 and 12: '))
+        s4.ChangeDutyCycle(position)
+    elif servonumber == 5:
+        s1.ChangeDutyCycle(2)
+        s2.ChangeDutyCycle(4)
+        s3.ChangeDutyCycle(3)
+        s4.ChangeDutyCycle(7)
+        GPIO.cleanup()
+        
+        raise SystemExit
+#     s1.ChangeDutyCycle(p7)
+#     time.sleep(5)
+#     s2.ChangeDutyCycle(p5)
+#     time.sleep(2)
+#     s3.ChangeDutyCycle(p7)
+#     time.sleep(2)
+#     s4.ChangeDutyCycle(p3)
+#     time.sleep(2)
+#     s4.ChangeDutyCycle(p1)
+#     time.sleep(2)
+#     s3.ChangeDutyCycle(p2)
+#     time.sleep(2)
+#     s2.ChangeDutyCycle(p3)
+#     time.sleep(2)
+#     s1.ChangeDutyCycle(p5)
